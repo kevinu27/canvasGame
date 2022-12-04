@@ -10,7 +10,7 @@ class Player{
             y:10
         }
         this.playerPhysics = {
-            gravity: 3
+            gravity: 20
         } 
         this.init()
     }
@@ -27,20 +27,9 @@ class Player{
             
         }
         gravityMove(){
-            console.log("gravity move")
             if(this.playerPos.y < this.canvasSize.h-this.playerSize.h){
-              
-
-                console.log("paso el if, o sea debeia caer")
                 this.playerPos.y += this.playerPhysics.gravity
-            }else {
-                console.log("enter de gravitywwww")
-                console.log("playerpoY", this.playerPos.y)
-                console.log(" canvasSize -playerSize", this.canvasSize.h-this.playerSize.h)
             }
-       
-
-
         }
         moveRight(){
             this.playerPos.x += 10

@@ -68,6 +68,7 @@ const game = {
     coins: [],
     ball: undefined,
     balls: [],
+    bullets: [],
     intervalId: 0,
     audio: undefined,
     
@@ -93,7 +94,18 @@ const game = {
 
 
     setEventListeners() {
-        
+        const canvas = document.querySelector('canvas')
+        canvas.addEventListener('mousedown', function(e) {
+        getCursorPosition(canvas, e)
+        })
+        const that = this
+        function getCursorPosition(canvas, event) {
+            const rect = canvas.getBoundingClientRect()
+            const x = event.clientX - rect.left
+            const y = event.clientY - rect.top
+            console.log("x: " + x + " y: " + y)
+            that.createBullet()
+        }
         document.onkeydown =e => {
             e.code === this.keys.SPACE ? this.createBall() : null            
         }
@@ -102,8 +114,6 @@ const game = {
             e.key === 'a' ?  this.player.moveLeft() : null
             e.key === 'w' ? this.player.moveUp() : null
             e.key === 's' ? console.log("s") : null
-
-            // e.key === " " ? console.log("espacio apryad") : null
         }
         // document.onkeydown = e => {
         //     e.key === 'm' ? console.log("espacio apryad"): null
@@ -127,6 +137,10 @@ const game = {
         //  this.ball= new Ball(this.ctx, 50, 100, 100, 100, this.canvasSize) // una bola
          this.balls.push(new Ball(this.ctx, 50, 100, 100, 100, this.canvasSize)) // muchas bolas
     },
+    createBullet(){
+         this.bullets.push(new Bullet(this.ctx, 10, this.player.playerPos.x+ this.player.playerSize.w, this.player.playerPos.y, 100, this.canvasSize))
+
+    },
     createPlayer(){
         this.player = new Player(this.ctx, 50, 80, 0, this.canvasSize.h-100, this.canvasSize)
     },
@@ -136,6 +150,7 @@ const game = {
     drawAll(){
         // this.ball.draw() // dibujar un abola
         this.balls.forEach(elm => elm.draw())
+        this.bullets.forEach(elm => elm.draw())
         this.player.draw() // dibujar un abola
 
     }, 
@@ -143,6 +158,7 @@ const game = {
         // this.ball.move()
         this.player.gravityMove()
         this.balls.forEach(elm => elm.move())
+        this.bullets.forEach(elm => elm.move())
         
     },
 
