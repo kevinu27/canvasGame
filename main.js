@@ -58,7 +58,7 @@ const game = {
     oneTime2: true,
 
     // elementros creados
-    shinobi: undefined,
+    player: undefined,
     background: undefined,
     platformArrayList: [],
     enemyArrayList: [],     // enemy 
@@ -67,6 +67,7 @@ const game = {
     monstersList: [],
     coins: [],
     ball: undefined,
+    balls: [],
     intervalId: 0,
     audio: undefined,
     
@@ -85,20 +86,25 @@ const game = {
     setDimensions() {
         this.canvasSize.w = window.innerWidth
         this.canvasSize.h = window.innerHeight
-        this.canvasDOM.setAttribute('width', this.canvasSize.w/2)
-        this.canvasDOM.setAttribute('height', this.canvasSize.h/2)
+        // console.log('window.innerHeight', window.innerHeight)
+        this.canvasDOM.setAttribute('width', this.canvasSize.w)
+        this.canvasDOM.setAttribute('height', this.canvasSize.h)
     },
 
 
     setEventListeners() {
-        document.onkeydown =e => e.code === this.keys.SPACE ? this.createBall() : null
-        // document.onkeypress = e => {
-        //     // e.key === 'a' ? this.movementLeft() : null
-        //     // e.key === 'd' ? this.movementRight() : null
-        //     // e.key === 'w' ? this.shinobi.moveUp() : null
-        //     // e.key === 's' ? this.shinobi.moveDown() : null
-        //     e.key === " " ? console.log("espacio apryad") : null
-        // }
+        
+        document.onkeydown =e => {
+            e.code === this.keys.SPACE ? this.createBall() : null            
+        }
+        document.onkeypress = e => {
+            e.key === 'd' ? this.player.moveRight() : null
+            e.key === 'a' ?  this.player.moveLeft() : null
+            e.key === 'w' ? this.player.moveUp() : null
+            e.key === 's' ? console.log("s") : null
+
+            // e.key === " " ? console.log("espacio apryad") : null
+        }
         // document.onkeydown = e => {
         //     e.key === 'm' ? console.log("espacio apryad"): null
         // }
@@ -108,27 +114,36 @@ const game = {
     },
 
     start(){
-
+        this.createPlayer()
         setInterval(()=> {
-            console.log('ghgjh')
+            // console.log('ghgjh')
             this.clearAll()
             this.drawAll()
             this.moveAll()
-        }, 300)
+        }, 100)
     },
     createBall(){
         //contexto, radio, x, y 
-         this.ball= new Ball(this.ctx, 50, 100, 100, 100, this.canvasSize)
+        //  this.ball= new Ball(this.ctx, 50, 100, 100, 100, this.canvasSize) // una bola
+         this.balls.push(new Ball(this.ctx, 50, 100, 100, 100, this.canvasSize)) // muchas bolas
+    },
+    createPlayer(){
+        this.player = new Player(this.ctx, 50, 80, 0, this.canvasSize.h-100, this.canvasSize)
     },
     clearAll(){
         this.ctx.clearRect(0,0, this.canvasSize.w, this.canvasSize.h)
     },
     drawAll(){
-        this.ball.draw()
+        // this.ball.draw() // dibujar un abola
+        this.balls.forEach(elm => elm.draw())
+        this.player.draw() // dibujar un abola
+
     }, 
     moveAll(){
-        this.ball.move()
-
+        // this.ball.move()
+        this.player.gravityMove()
+        this.balls.forEach(elm => elm.move())
+        
     },
 
 
