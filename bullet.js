@@ -41,12 +41,18 @@ class Bullet{
             // console.log("XXXXXX",this.xClick)
             // let tangente = Math.tan
             let angle = Math.atan2( this.playerPosY - this.yClick , this.xClick - this.playerPosX) * 180 / Math.PI
+            const angleRad = Math.atan2( this.playerPosY - this.yClick , this.xClick - this.playerPosX) 
             console.log("angulo", angle)
+            console.log("angleRad", angleRad)
+
+            const deltaX = Math.cos(angleRad)*30
+            const deltaY = Math.sin(angleRad)*30*-1
             // const a = this.playerPosY - this.yClick
             // console.log("a", this.playerposY)
             // console.log("this.playerPosY - this.yClick , this.xClick - this.playerPosX", this.playerPosY - this.yClick , this.xClick - this.playerPosX)
 
-            this.bulletPos.x += this.bulletVel.x
+            this.bulletPos.x += deltaX
+            this.bulletPos.y += deltaY
             // this.bulletVel.y += this.bulletPhysics.gravity
             // this.bulletPos.y += this.bulletVel.y
             // if(this.bulletPos.y > this.canvasSize.h){
