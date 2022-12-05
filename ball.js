@@ -32,10 +32,13 @@ class Ball{
             this.ballPos.x += this.ballVel.x
             this.ballVel.y += this.ballPhysics.gravity
             this.ballPos.y += this.ballVel.y
-            if(this.ballPos.y > this.canvasSize.h){
+            if(this.ballPos.y > this.canvasSize.h - this.ballSize){
                 this.ballVel.y = this.ballVel.y*-1
             }
-            if(this.ballPos.x > this.canvasSize.w){
+            if(this.ballPos.x > this.canvasSize.w - this.ballSize){
+                this.ballVel.x = this.ballVel.x*-1
+            }
+            if(this.ballPos.x < this.ballSize){
                 this.ballVel.x = this.ballVel.x*-1
             }
 

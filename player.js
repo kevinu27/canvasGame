@@ -12,12 +12,25 @@ class Player{
         this.playerPhysics = {
             gravity: 20
         } 
+        this.lifeBar = 300
         this.init()
     }
 
         init(){
     //    console.log('iniciada')
     //    console.log('this.ballPos', this.ballPos)
+        }
+        drawLife() {
+            this.ctx.fillStyle = 'green'
+            this.ctx.fillRect(80, 30, this.lifeBar, 40)
+            this.ctx.strokeStyle = 'white'
+            this.ctx.strokeRect(80, 30, 300, 40)
+            this.ctx.lineWidth = 5
+            this.ctx.strokeStyle = 'black'
+            this.ctx.strokeRect(80, 30, 300, 40)
+            this.ctx.lineWidth = 7
+            // this.ctx.drawImage(this.imageFavicon, 30, 30, 40, 40)
+    
         }
 
         draw(){

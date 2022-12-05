@@ -162,11 +162,14 @@ const game = {
         this.balls.forEach(elm => elm.draw())
         this.bullets.forEach(elm => elm.draw())
         this.player.draw() // dibujar un abola
+        this.player.drawLife()
+
 
     }, 
     allCollision(){
         this.bullletsCollision()
         this.playerColission()
+        this.bulletsOut()
 
 
     },
@@ -177,6 +180,17 @@ const game = {
         this.bullets.forEach(elm => elm.move())
         
     },
+
+    bulletsOut(){
+        for(let i=0; i < this.bullets.length; i++){
+            console.log("number of bullets=", this.bullets.length)
+            if(this.bullets[i].bulletPos.x > this.canvasSize.w || this.bullets[i].bulletPos.y < 0 || this.bullets[i].bulletPos.x < 0 ){
+                this.bullets.splice(i, 1)
+            }
+        }
+
+    },
+
     bullletsCollision(){
         console.log("---")
         // console.log(this.bullets)
@@ -188,7 +202,6 @@ const game = {
                 console.log("colission!!!!!")
                 this.balls.splice(i, 1)
                 this.bullets.splice(j, 1)
-
               }
             }
         }
@@ -200,9 +213,8 @@ const game = {
                 && this.balls[i].ballPos.x - this.balls[i].ballSize < this.player.playerPos.x + this.player.playerSize.w 
                 ){
                     console.log("ayyyy daño!!!!!")
+                    this.player.lifeBar -= 33
+            }
         }
     }
-    }
-
-
 }
