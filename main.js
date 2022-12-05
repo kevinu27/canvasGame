@@ -71,6 +71,8 @@ const game = {
     bullets: [],
     intervalId: 0,
     audio: undefined,
+    x:undefined,
+    y: undefined,
     
     init() {
         this.setContext()
@@ -92,18 +94,25 @@ const game = {
         this.canvasDOM.setAttribute('height', this.canvasSize.h)
     },
 
-
+    
     setEventListeners() {
         const canvas = document.querySelector('canvas')
+        // canvas.addEventListener('mousemove', function(e) {
+        //     getCursorAngle(canvas, e)
+        // })
+        // function getCursorAngle (canvas, event) {
+        //     console.log("mouse move")
+        // }
+
         canvas.addEventListener('mousedown', function(e) {
         getCursorPosition(canvas, e)
         })
-        const that = this
+         const that = this
         function getCursorPosition(canvas, event) {
             const rect = canvas.getBoundingClientRect()
-            const x = event.clientX - rect.left
-            const y = event.clientY - rect.top
-            console.log("x: " + x + " y: " + y)
+            that.x = event.clientX - rect.left
+            that.y = event.clientY - rect.top
+            console.log("x: " + this.x + " y: " + this.y)
             that.createBullet()
         }
         document.onkeydown =e => {
@@ -138,7 +147,7 @@ const game = {
          this.balls.push(new Ball(this.ctx, 50, 100, 100, 100, this.canvasSize)) // muchas bolas
     },
     createBullet(){
-         this.bullets.push(new Bullet(this.ctx, 10, this.player.playerPos.x+ this.player.playerSize.w, this.player.playerPos.y, 100, this.canvasSize))
+         this.bullets.push(new Bullet(this.ctx, 10, this.player.playerPos.x+ this.player.playerSize.w, this.player.playerPos.y, 100, this.canvasSize, this.x, this.y, this.player.playerPos.x, this.player.playerPos.y ))
 
     },
     createPlayer(){
