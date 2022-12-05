@@ -112,7 +112,7 @@ const game = {
             const rect = canvas.getBoundingClientRect()
             that.x = event.clientX - rect.left
             that.y = event.clientY - rect.top
-            console.log("x: " + this.x + " y: " + this.y)
+            // console.log("x: " + that.x + " y: " + that.y)
             that.createBullet()
         }
         document.onkeydown =e => {
@@ -139,6 +139,7 @@ const game = {
             this.clearAll()
             this.drawAll()
             this.moveAll()
+            this.allCollision()
         }, 100)
     },
     createBall(){
@@ -163,6 +164,12 @@ const game = {
         this.player.draw() // dibujar un abola
 
     }, 
+    allCollision(){
+        this.bullletsCollision()
+        this.playerColission()
+
+
+    },
     moveAll(){
         // this.ball.move()
         this.player.gravityMove()
@@ -170,6 +177,32 @@ const game = {
         this.bullets.forEach(elm => elm.move())
         
     },
+    bullletsCollision(){
+        console.log("---")
+        // console.log(this.bullets)
+        for(let i=0; i< this.balls.length; i++){
+            //  console.log(this.balls[i])
+            for(let j=0; j < this.bullets.length; j++){
+              if (Math.abs(this.bullets[j].bulletPos.x - this.balls[i].ballPos.x) < (this.bullets[j].bulletSize + this.balls[i].ballSize) &&
+               Math.abs(this.bullets[j].bulletPos.y - this.balls[i].ballPos.y) < (this.bullets[j].bulletSize + this.balls[i].ballSize)){
+                console.log("colission!!!!!")
+                this.balls.splice(i, 1)
+                this.bullets.splice(j, 1)
+
+              }
+            }
+        }
+
+    },
+    playerColission(){
+        for(let i=0; i< this.balls.length; i++){
+            if (this.balls[i].ballPos.x + this.balls[i].ballSize > this.player.playerPos.x && this.balls[i].ballPos.y + this.balls[i].ballSize > this.player.playerPos.y 
+                && this.balls[i].ballPos.x - this.balls[i].ballSize < this.player.playerPos.x + this.player.playerSize.w 
+                ){
+                    console.log("ayyyy daño!!!!!")
+        }
+    }
+    }
 
 
 }
