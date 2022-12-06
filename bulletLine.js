@@ -30,13 +30,13 @@ class BulletLine{
             // console.log("angulo", angle)
              console.log("angleRad BulletLine", angleRad)
 
-            const deltaX = Math.cos(angleRad)*10
-            const deltaY = Math.sin(angleRad)*10
+            const deltaX = this.bulletLinePos.x + Math.cos(angleRad)*1000
+            const deltaY = this.bulletLinePos.y - Math.sin(angleRad)*1000
 
             this.ctx.beginPath(); // Start a new path
             this.ctx.moveTo(this.bulletLinePos.x, this.bulletLinePos.y); // Move the pen to (30, 50)
             this.ctx.lineTo(deltaX, deltaY); // Draw a line to (150, 100)
-            this.ctx.lineTo(deltaX+10, deltaY+10); // Draw a line to (150, 100)
+            // this.ctx.lineTo(deltaX+10, deltaY+10); // Draw a line to (150, 100)
             this.ctx.stroke(); // Render the path
         }
 
