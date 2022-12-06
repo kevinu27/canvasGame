@@ -7,10 +7,10 @@ class Bonus{
         this.bonusesCircle =bonusesCircle
         this.bonusesVel = {
             x: bonusesVel,
-            y:3
+            y:2
         }
         this.bonusesPhysics = {
-            gravity: 0.8
+            gravity: 0.5
         } 
         this.init()
     }

@@ -11,6 +11,7 @@ const game = {
     FPS: 20,
     Temp: 0,
     score: 0,
+    framesCounter:0,
     canvasSize: { w: undefined, h: undefined },
     keys: {
         SPACE: 'Space',
@@ -34,6 +35,8 @@ const game = {
     ball: undefined,
     balls: [],
     bullets: [],
+    bulletsLine: [],
+    bulletLine: undefined,
     intervalId: 0,
     audio: undefined,
     x:undefined,
@@ -62,6 +65,7 @@ const game = {
 
     
     setEventListeners() {
+        this.framesCounter > 5000 ? this.framesCounter = 0 : this.framesCounter++
         const canvas = document.querySelector('canvas')
         // canvas.addEventListener('mousemove', function(e) {
         //     getCursorAngle(canvas, e)
@@ -80,6 +84,7 @@ const game = {
             that.y = event.clientY - rect.top
             // console.log("x: " + that.x + " y: " + that.y)
             that.createBullet()
+            that.createBulletLine()
         }
         document.onkeydown =e => {
             e.code === this.keys.SPACE ? this.createBall() : null            
@@ -117,6 +122,11 @@ const game = {
          this.bullets.push(new Bullet(this.ctx, 10, this.player.playerPos.x+ this.player.playerSize.w, this.player.playerPos.y, 100, this.canvasSize, this.x, this.y, this.player.playerPos.x, this.player.playerPos.y ))
 
     },
+    createBulletLine(){
+          this.bulletLine = new BulletLine(this.ctx, 10, this.player.playerPos.x+ this.player.playerSize.w, this.player.playerPos.y, 100, this.canvasSize, this.x, this.y, this.player.playerPos.x, this.player.playerPos.y )
+
+   },
+
     createPlayer(){
         this.player = new Player(this.ctx, 50, 80, 0, this.canvasSize.h-100, this.canvasSize)
     },
@@ -131,6 +141,7 @@ const game = {
         this.player.draw() // dibujar un abola
         this.player.drawLife()
         this.drawText()
+        this.bulletLine.draw()
         
 
 
@@ -206,6 +217,9 @@ const game = {
                 && this.balls[i].ballPos.x - this.balls[i].ballSize < this.player.playerPos.x + this.player.playerSize.w 
                 ){
                     console.log("ayyyy daño!!!!!")
+                    if(this.player.lifeBar <= 1){
+                        return
+                    }
                     this.player.lifeBar -= 33
             }
         }
@@ -216,6 +230,9 @@ const game = {
                 && this.bonuses[i].bonusesPos.x < this.player.playerPos.x + this.player.playerSize.w 
                 ){
                     console.log("ayyyy alivio!!!!!")
+                    if(this.player.lifeBar >= 300){
+                        return
+                    }
                     this.player.lifeBar += 33
             }
         }
