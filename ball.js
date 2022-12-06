@@ -1,12 +1,12 @@
 class Ball{
-    constructor(ctx, ballSize, ballPosX, ballPosY, ballCircle, canvasSize){
+    constructor(ctx, ballSize, ballPosX, ballPosY, ballCircle, canvasSize, ballVel){
         this.ctx = ctx
         this.ballSize = ballSize
         this.ballPos = { x: ballPosX, y: ballPosY}
         this.canvasSize = canvasSize
         this.ballCircle =ballCircle
         this.ballVel = {
-            x: 10,
+            x: ballVel,
             y:10
         }
         this.ballPhysics = {
@@ -22,11 +22,16 @@ class Ball{
 
         draw(){
             this.ctx.beginPath();
+            this.ctx.arc(this.ballPos.x, this.ballPos.y , this.ballSize+5, 0, Math.PI*2);
+            this.ctx.fillStyle = "#000000";
+            this.ctx.fill();
+            this.ctx.closePath();
+            this.ctx.beginPath();
             this.ctx.arc(this.ballPos.x, this.ballPos.y , this.ballSize, 0, Math.PI*2);
             this.ctx.fillStyle = "#0095DD";
             this.ctx.fill();
             this.ctx.closePath();
-            console.log("canvas size= ", this.canvasSize)
+            // console.log("canvas size= ", this.canvasSize)
         }
         move(){
             this.ballPos.x += this.ballVel.x

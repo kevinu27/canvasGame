@@ -1,38 +1,3 @@
-// var canvas = document.getElementById("myCanvas");
-// var ctx = canvas.getContext("2d");
-// var ballRadius = 10;
-// var x = canvas.width/2;
-// var y = canvas.height-30;
-// var dx = 2;
-// var dy = -2;
-
-// const { throwStatement } = require("@babel/types")
-
-// function drawBall() {
-//     ctx.beginPath();
-//     ctx.arc(x, y, ballRadius, 0, Math.PI*2);
-//     ctx.fillStyle = "#0095DD";
-//     ctx.fill();
-//     ctx.closePath();
-// }
-
-// function draw() {
-//     ctx.clearRect(0, 0, canvas.width, canvas.height);
-//     drawBall();
-    
-//     if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
-//         dx = -dx;
-//     }
-//     if(y + dy > canvas.height-ballRadius || y + dy < ballRadius) {
-//         dy = -dy;
-//     }
-    
-//     x += dx;
-//     y += dy;
-// }
-
-// setInterval(draw, 10);
-
 const game = {
     title: 'Shinobi',
     author: 'Jose y Kevin',
@@ -45,7 +10,7 @@ const game = {
     framesCounter: 0,
     FPS: 20,
     Temp: 0,
-    puntos: 0,
+    score: 0,
     canvasSize: { w: undefined, h: undefined },
     keys: {
         SPACE: 'Space',
@@ -73,7 +38,8 @@ const game = {
     audio: undefined,
     x:undefined,
     y: undefined,
-    
+    FPS: 25,
+    bonuses: [],
     init() {
         this.setContext()
         this.setDimensions()
@@ -140,12 +106,12 @@ const game = {
             this.drawAll()
             this.moveAll()
             this.allCollision()
-        }, 100)
+        }, 1000/this.FPS)
     },
     createBall(){
         //contexto, radio, x, y 
         //  this.ball= new Ball(this.ctx, 50, 100, 100, 100, this.canvasSize) // una bola
-         this.balls.push(new Ball(this.ctx, 50, 100, 100, 100, this.canvasSize)) // muchas bolas
+         this.balls.push(new Ball(this.ctx, 150 , this.canvasSize.w/2, 100, 100, this.canvasSize, 10)) // muchas bolas
     },
     createBullet(){
          this.bullets.push(new Bullet(this.ctx, 10, this.player.playerPos.x+ this.player.playerSize.w, this.player.playerPos.y, 100, this.canvasSize, this.x, this.y, this.player.playerPos.x, this.player.playerPos.y ))
@@ -160,16 +126,21 @@ const game = {
     drawAll(){
         // this.ball.draw() // dibujar un abola
         this.balls.forEach(elm => elm.draw())
+        this.bonuses.forEach(elm => elm.draw())
         this.bullets.forEach(elm => elm.draw())
         this.player.draw() // dibujar un abola
         this.player.drawLife()
+        this.drawText()
+        
 
 
     }, 
     allCollision(){
-        this.bullletsCollision()
+        this.bullletsBallsCollision()
         this.playerColission()
         this.bulletsOut()
+        this.bonusesOut()
+        this.playerGettingBonus()
 
 
     },
@@ -178,28 +149,50 @@ const game = {
         this.player.gravityMove()
         this.balls.forEach(elm => elm.move())
         this.bullets.forEach(elm => elm.move())
+        this.bonuses.forEach(elm => elm.move())
+
         
     },
 
     bulletsOut(){
         for(let i=0; i < this.bullets.length; i++){
-            console.log("number of bullets=", this.bullets.length)
+            // console.log("number of bullets=", this.bullets.length)
             if(this.bullets[i].bulletPos.x > this.canvasSize.w || this.bullets[i].bulletPos.y < 0 || this.bullets[i].bulletPos.x < 0 ){
                 this.bullets.splice(i, 1)
             }
         }
 
     },
+    bonusesOut(){
+        for(let i=0; i < this.bonuses.length; i++){
+            if(this.bonuses[i].bonusesPos.y > this.canvasSize.h ){
+                this.bonuses.splice(i, 1)
+            }
+        }
 
-    bullletsCollision(){
-        console.log("---")
+    },
+
+    bullletsBallsCollision(){
+        // console.log("---")
         // console.log(this.bullets)
         for(let i=0; i< this.balls.length; i++){
             //  console.log(this.balls[i])
             for(let j=0; j < this.bullets.length; j++){
               if (Math.abs(this.bullets[j].bulletPos.x - this.balls[i].ballPos.x) < (this.bullets[j].bulletSize + this.balls[i].ballSize) &&
                Math.abs(this.bullets[j].bulletPos.y - this.balls[i].ballPos.y) < (this.bullets[j].bulletSize + this.balls[i].ballSize)){
-                console.log("colission!!!!!")
+                // console.log("colission!!!!!")
+                if(this.balls[i].ballSize <20){
+                    this.balls.splice(i, 1)
+                    this.bullets.splice(j, 1)
+                    return
+                }
+            this.balls.push(new Ball(this.ctx, this.balls[i].ballSize/2, this.balls[i].ballPos.x, this.balls[i].ballPos.y, 100, this.canvasSize, 10)) 
+            this.balls.push(new Ball(this.ctx, this.balls[i].ballSize/2, this.balls[i].ballPos.x, this.balls[i].ballPos.y, 100, this.canvasSize, -10)) 
+                this.score += this.balls[i].ballSize
+                if(this.score >= 100){
+                    this.bonuses.push(new Bonus(this.ctx, 40, 40, this.balls[i].ballPos.x, this.balls[i].ballPos.y, 100, this.canvasSize, 10)) 
+
+                }
                 this.balls.splice(i, 1)
                 this.bullets.splice(j, 1)
               }
@@ -216,5 +209,24 @@ const game = {
                     this.player.lifeBar -= 33
             }
         }
-    }
+    }, 
+    playerGettingBonus(){
+        for(let i=0; i< this.bonuses.length; i++){
+            if (this.bonuses[i].bonusesPos.x + this.bonuses[i].bonusesSize.x > this.player.playerPos.x && this.bonuses[i].bonusesPos.y + this.bonuses[i].bonusesSize.y > this.player.playerPos.y 
+                && this.bonuses[i].bonusesPos.x < this.player.playerPos.x + this.player.playerSize.w 
+                ){
+                    console.log("ayyyy alivio!!!!!")
+                    this.player.lifeBar += 33
+            }
+        }
+
+    },
+
+    drawText(){
+        this.ctx.fillStyle = 'white'
+        this.ctx.strokeStyle = 'black'
+        this.ctx.font = '48px serif';
+        this.ctx.strokeText(`Score ${this.score}`, 700, 80);
+        this.ctx.fillText(`Score ${this.score}`, 700, 80);
+    },
 }
