@@ -124,10 +124,11 @@ const game = {
     },
     
     createBulletLine(){
+        // console.log("bulletsline.lenght",  this.bulletsLine.length)
         //   this.bulletLine = new BulletLine(this.ctx, 10, this.player.playerPos.x+ this.player.playerSize.w, this.player.playerPos.y, 100, this.canvasSize, this.x, this.y, this.player.playerPos.x, this.player.playerPos.y )
         this.bulletsLine.push( new BulletLine(this.ctx, 10, this.player.playerPos.x+ this.player.playerSize.w, this.player.playerPos.y, 100, this.canvasSize, this.x, this.y, this.player.playerPos.x, this.player.playerPos.y ))
        
-        if(this.bullets.length >2){
+        if(this.bulletsLine.length >2){
             this.bulletsLine.splice(0, 1)
 
         }    

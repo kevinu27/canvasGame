@@ -48,8 +48,8 @@ class Player{
             
         }
         gravityMove(){
+            
             if(this.playerPos.y < this.canvasSize.h-this.playerSize.h){
-        console.log("bulletLineAngle", this.bulletLineAngle)
                 this.playerPos.y += this.playerPhysics.gravity
             }
         }
