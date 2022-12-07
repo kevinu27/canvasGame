@@ -122,10 +122,11 @@ const game = {
          this.bullets.push(new Bullet(this.ctx, 10, this.player.playerPos.x+ this.player.playerSize.w, this.player.playerPos.y, 100, this.canvasSize, this.x, this.y, this.player.playerPos.x, this.player.playerPos.y ))
 
     },
+    
     createBulletLine(){
           this.bulletLine = new BulletLine(this.ctx, 10, this.player.playerPos.x+ this.player.playerSize.w, this.player.playerPos.y, 100, this.canvasSize, this.x, this.y, this.player.playerPos.x, this.player.playerPos.y )
-
-   },
+        //   this.bulletsLine.push( new BulletLine(this.ctx, 10, this.player.playerPos.x+ this.player.playerSize.w, this.player.playerPos.y, 100, this.canvasSize, this.x, this.y, this.player.playerPos.x, this.player.playerPos.y ))
+        },
 
     createPlayer(){
         this.player = new Player(this.ctx, 50, 80, 0, this.canvasSize.h-100, this.canvasSize)
@@ -141,7 +142,9 @@ const game = {
         this.player.draw() // dibujar un abola
         this.player.drawLife()
         this.drawText()
-        this.bulletLine.draw()
+        this.bulletLine?.draw()
+        // this.bulletLine.forEach(elm => elm.draw())
+
         
 
 

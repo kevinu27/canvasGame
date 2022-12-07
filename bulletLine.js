@@ -25,10 +25,11 @@ class BulletLine{
         }
 
         draw(){
+            // console.log("draw del bulletLine")
             // let angle = Math.atan2( this.playerPosY - this.yClick , this.xClick - this.playerPosX) * 180 / Math.PI
             const angleRad = Math.atan2( this.playerPosY - this.yClick , this.xClick - this.playerPosX) 
-            // console.log("angulo", angle)
-             console.log("angleRad BulletLine", angleRad)
+            // // console.log("angulo", angle)
+            //  console.log("angleRad BulletLine", angleRad)
 
             const deltaX = this.bulletLinePos.x + Math.cos(angleRad)*1000
             const deltaY = this.bulletLinePos.y - Math.sin(angleRad)*1000
@@ -40,9 +41,9 @@ class BulletLine{
             this.ctx.stroke(); // Render the path
         }
 
-        move(){
+        // move(){
 
-        }
+        // }
 
 
 }
