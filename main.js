@@ -124,12 +124,17 @@ const game = {
     },
     
     createBulletLine(){
-          this.bulletLine = new BulletLine(this.ctx, 10, this.player.playerPos.x+ this.player.playerSize.w, this.player.playerPos.y, 100, this.canvasSize, this.x, this.y, this.player.playerPos.x, this.player.playerPos.y )
-        //   this.bulletsLine.push( new BulletLine(this.ctx, 10, this.player.playerPos.x+ this.player.playerSize.w, this.player.playerPos.y, 100, this.canvasSize, this.x, this.y, this.player.playerPos.x, this.player.playerPos.y ))
-        },
+        //   this.bulletLine = new BulletLine(this.ctx, 10, this.player.playerPos.x+ this.player.playerSize.w, this.player.playerPos.y, 100, this.canvasSize, this.x, this.y, this.player.playerPos.x, this.player.playerPos.y )
+        this.bulletsLine.push( new BulletLine(this.ctx, 10, this.player.playerPos.x+ this.player.playerSize.w, this.player.playerPos.y, 100, this.canvasSize, this.x, this.y, this.player.playerPos.x, this.player.playerPos.y ))
+       
+        if(this.bullets.length >2){
+            this.bulletsLine.splice(0, 1)
+
+        }    
+    },
 
     createPlayer(){
-        this.player = new Player(this.ctx, 50, 80, 0, this.canvasSize.h-100, this.canvasSize)
+        this.player = new Player(this.ctx, 50, 80, 0, this.canvasSize.h-100, this.canvasSize, this.bulletsLine.angleRad)
     },
     clearAll(){
         this.ctx.clearRect(0,0, this.canvasSize.w, this.canvasSize.h)
@@ -139,11 +144,12 @@ const game = {
         this.balls.forEach(elm => elm.draw())
         this.bonuses.forEach(elm => elm.draw())
         this.bullets.forEach(elm => elm.draw())
-        this.player.draw() // dibujar un abola
+        this.player.draw() 
         this.player.drawLife()
         this.drawText()
-        this.bulletLine?.draw()
-        // this.bulletLine.forEach(elm => elm.draw())
+        // this.bulletLine?.draw()
+         this.bulletsLine.forEach(elm => elm.draw())
+         console.log("this.bulletsLine.angleRad", this.bulletsLine[0]?.angleRad)
 
         
 

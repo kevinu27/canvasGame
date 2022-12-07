@@ -39,7 +39,7 @@ class Bullet{
             let angle = Math.atan2( this.playerPosY - this.yClick , this.xClick - this.playerPosX) * 180 / Math.PI
             const angleRad = Math.atan2( this.playerPosY - this.yClick , this.xClick - this.playerPosX) 
             // console.log("angulo", angle)
-             console.log("angleRad", angleRad)
+            //  console.log("angleRad", angleRad)
 
             const deltaX = Math.cos(angleRad)*30
             const deltaY = Math.sin(angleRad)*30*-1

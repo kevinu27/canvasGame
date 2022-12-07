@@ -1,5 +1,5 @@
 class Player{
-    constructor(ctx,playerWidth, playerheight, playerPosX, playerPosY, canvasSize){
+    constructor(ctx,playerWidth, playerheight, playerPosX, playerPosY, canvasSize, bulletLineAngle){
         this.ctx = ctx
         this.playerSize ={ w: playerWidth, h: playerheight}
         this.playerPos = { x: playerPosX, y: playerPosY}
@@ -13,6 +13,7 @@ class Player{
             gravity: 20
         } 
         this.lifeBar = 300
+        this.bulletLineAngle = bulletLineAngle
         this.init()
     }
 
@@ -41,12 +42,14 @@ class Player{
 
         draw(){
             this.ctx.beginPath();
+            this.ctx.fillStyle = "#FF0000";
             this.ctx.fillRect(this.playerPos.x, this.playerPos.y, this.playerSize.w, this.playerSize.h)
             this.ctx.stroke();
             
         }
         gravityMove(){
             if(this.playerPos.y < this.canvasSize.h-this.playerSize.h){
+        console.log("bulletLineAngle", this.bulletLineAngle)
                 this.playerPos.y += this.playerPhysics.gravity
             }
         }
