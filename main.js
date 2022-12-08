@@ -90,9 +90,9 @@ const game = {
             e.code === this.keys.SPACE ? this.createBall() : null            
         }
         document.onkeypress = e => {
-            e.key === 'd' ? this.player.moveRight() : null
-            e.key === 'a' ?  this.player.moveLeft() : null
-            e.key === 'w' ? this.player.moveUp() : null
+            e.key === 'd' ? this.moveRight() : null
+            e.key === 'a' ?  this.moveLeft() : null
+            e.key === 'w' ? this.moveUp() : null
             e.key === 's' ? console.log("s") : null
         }
         // document.onkeydown = e => {
@@ -167,7 +167,9 @@ const game = {
     },
     moveAll(){
         // this.ball.move()
-        this.player.gravityMove()
+        // this.player.gravityMove()
+        this.gravityMove()
+
         this.balls.forEach(elm => elm.move())
         this.bullets.forEach(elm => elm.move())
         this.bonuses.forEach(elm => elm.move())
@@ -256,4 +258,25 @@ const game = {
         this.ctx.strokeText(`Score ${this.score}`, 700, 80);
         this.ctx.fillText(`Score ${this.score}`, 700, 80);
     },
+    gravityMove(){
+
+        if(this.player.playerPos.y < this.canvasSize.h-this.player.playerSize.h){
+            this.player.playerPos.y += this.player.playerPhysics.gravity
+        }
+        // if(this.playerPos.x > ){
+        //     console.log("temp")
+        // }
+
+
+    },
+    moveRight(){
+        console.log("desde el main")
+        this.player.playerPos.x += 10
+    },
+    moveLeft(){
+        this.player.playerPos.x -= 10
+    },
+    moveUp(){
+        this.player.playerPos.y -= 100
+    }
 }
