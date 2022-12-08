@@ -107,6 +107,7 @@ const game = {
         this.createPlayer()
         setInterval(()=> {
             // console.log('ghgjh')
+            this.framesCounter > 5000 ? this.framesCounter = 0 : this.framesCounter++
             this.clearAll()
             this.drawAll()
             this.moveAll()
