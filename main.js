@@ -12,6 +12,7 @@ const game = {
     Temp: 0,
     score: 0,
     framesCounter:0,
+    tilted: false,
     canvasSize: { w: undefined, h: undefined },
     keys: {
         SPACE: 'Space',
@@ -145,7 +146,7 @@ const game = {
         this.balls.forEach(elm => elm.draw())
         this.bonuses.forEach(elm => elm.draw())
         this.bullets.forEach(elm => elm.draw())
-        this.player.draw() 
+        this.player.draw(this.tilted) 
         this.player.drawLife()
         this.drawText()
         // this.bulletLine?.draw()
@@ -260,24 +261,37 @@ const game = {
     },
     gravityMove(){
 
+      
+        for(let i = 0; i< this.bulletsLine.length ; i++ ){
+        if(this.player.playerPos.x > this.bulletsLine[i].bulletLinePos.x &&  this.player.playerPos.x < this.bulletsLine[i].deltaX ){
+            this.tilted = true
+            // const HowInsideBulletLinePlayerIsInX =  this.player.playerPos.x - this.bulletsLine[i].bulletLinePos.x
+            // const bulletLineFloorLimit =   HowInsideBulletLinePlayerIsInX * Math.tan(this.bulletsLine[i].angleRad)
+            // const floorToBulletLineFloor = bulletLineFloorLimit + ( this.canvasSize.h - this.bulletsLine[i].bulletLinePos.y )
+            const finalValueBulletLineFloor = this.canvasSize.h - (((this.player.playerPos.x - this.bulletsLine[i].bulletLinePos.x) * Math.tan(this.bulletsLine[i].angleRad)) + ( this.canvasSize.h - this.bulletsLine[i].bulletLinePos.y ))
+            console.log("finalValueBulletLineFloor", finalValueBulletLineFloor)
+
+            //  if(this.player.playerPos.x > this.bulletsLine[i].bulletLinePos.x &&  this.player.playerPos.x < this.bulletsLine[i].deltaX && this.player.playerPos.y > finalValueBulletLineFloor ){
+            //     if(this.player.playerPos.y < this.canvasSize.h-this.player.playerSize.h){
+            //         this.player.playerPos.y += this.player.playerPhysics.gravity
+            //     }    
+            //  }else{
+            //     return
+            //  }
+        if(this.player.playerPos.x > this.bulletsLine[i].bulletLinePos.x &&  this.player.playerPos.x < this.bulletsLine[i].deltaX && this.player.playerPos.y + this.player.playerSize.h < finalValueBulletLineFloor- 20 ){
+            this.player.playerPos.y += this.player.playerPhysics.gravity
+         }else{
+            return
+         }
+    }else{
+        this.tilted = false
+
+    }
+        }
+
         if(this.player.playerPos.y < this.canvasSize.h-this.player.playerSize.h){
             this.player.playerPos.y += this.player.playerPhysics.gravity
         }
-        for(let i = 0; i< this.bulletsLine.length ; i++ ){
-        if(this.player.playerPos.x > this.bulletsLine[i].bulletLinePos.x &&  this.player.playerPos.x < this.bulletsLine[i].deltaX  ){
-            const HowInsideBulletLinePlayerIsInX =  this.player.playerPos.x - this.bulletsLine[i].bulletLinePos.x
-            const bulletLineFloorLimit =   HowInsideBulletLinePlayerIsInX * Math.tan(this.bulletsLine[i].angleRad)
-            // console.log("angulo de la bulletLine", this.bulletsLine[i].angleRad* 180 / Math.PI)
-            // console.log("bulletLineFloorLimit", bulletLineFloorLimit)
-            const floorToBulletLineFloor = bulletLineFloorLimit + ( this.canvasSize.h - this.bulletsLine[i].bulletLinePos.y )
-            // console.log("floorToBulletLineFloor", floorToBulletLineFloor)
-            // console.log("canvassize.h", this.canvasSize.h)
-            // console.log("floorToBulletLineFloor", floorToBulletLineFloor)
-            const finalValueBulletLineFloor = this.canvasSize.h - floorToBulletLineFloor
-             console.log("finalValueBulletLineFloor", finalValueBulletLineFloor)
-         }
-    }
-
 
     },
     moveRight(){

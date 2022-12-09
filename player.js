@@ -27,6 +27,7 @@ class Player{
     //    console.log('this.ballPos', this.ballPos)
         }
         drawLife() {
+           
             if(this.lifeBar >= 0){
                 this.ctx.fillStyle = 'green'
             this.ctx.fillRect(80, 30, this.lifeBar, 40)
@@ -45,11 +46,19 @@ class Player{
     
         }
 
-        draw(){
+        draw(tilted){
+            const angleRad = Math.atan2( this.playerPos.y - this.bulletLinesEndY, this.bulletLinesEndX - this.playerPos.x) 
             this.ctx.beginPath();
+            if(tilted === true){
+                // console.log("entro en el tilted === true")
+                this.ctx.rotate(angleRad)
+            }
+            // this.ctx.rotate(45*180/Math.PI)
+
             this.ctx.fillStyle = "#FF0000";
             this.ctx.fillRect(this.playerPos.x, this.playerPos.y, this.playerSize.w, this.playerSize.h)
             this.ctx.stroke();
+           
             
         }
         gravityMove(){
