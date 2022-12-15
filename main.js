@@ -42,7 +42,10 @@ const game = {
     audio: undefined,
     x:undefined,
     y: undefined,
-    FPS: 25,
+    prevFrameCounter: undefined,
+    FPS: 60,
+    goingUp:false,
+    counter: 0,
     bonuses: [],
     init() {
         this.setContext()
@@ -88,12 +91,21 @@ const game = {
             that.createBulletLine()
         }
         document.onkeydown =e => {
-            e.code === this.keys.SPACE ? this.createBall() : null            
+            e.code === this.keys.SPACE ? this.createBall() : null
+            e.key === 'z' ? console.log("espacio apryad"): null
+            
+
         }
         document.onkeypress = e => {
             e.key === 'd' ? this.moveRight() : null
             e.key === 'a' ?  this.moveLeft() : null
-            e.key === 'w' ? this.moveUp() : null
+            // e.key === 'w' ? this.moveUp() : null
+            if(e.key === 'w') { 
+                console.log("UUUUUPPPPPP!!!!")
+                this.goingUp = true
+                this.prevFrameCounter = this.framesCounter
+                this.moveUp()
+            }
             e.key === 's' ? console.log("s") : null
         }
         // document.onkeydown = e => {
@@ -113,6 +125,13 @@ const game = {
             this.drawAll()
             this.moveAll()
             this.allCollision()
+            if(this.goingUp=== true && this.framesCounter < this.prevFrameCounter +9){
+                this.counter = this.counter +1
+                 console.log("this.counter", this.counter)
+                 this.player.playerPos.y -= 75
+             }else{
+                this.goingUp = false
+             }
         }, 1000/this.FPS)
     },
     createBall(){
@@ -263,13 +282,22 @@ const game = {
 
       
         for(let i = 0; i< this.bulletsLine.length ; i++ ){
-        if(this.player.playerPos.x > this.bulletsLine[i].bulletLinePos.x &&  this.player.playerPos.x < this.bulletsLine[i].deltaX ){
+            const finalValueBulletLineFloor = this.canvasSize.h - (((this.player.playerPos.x - this.bulletsLine[i].bulletLinePos.x) * Math.tan(this.bulletsLine[i].angleRad)) + ( this.canvasSize.h - this.bulletsLine[i].bulletLinePos.y ))
+            console.log("finalValueBulletLineFloor", finalValueBulletLineFloor)
+        if(this.player.playerPos.x > this.bulletsLine[i].bulletLinePos.x &&  this.player.playerPos.x < this.bulletsLine[i].deltaX && this.player.playerPos.y + this.player.playerSize.h < finalValueBulletLineFloor- 20 ){
             this.tilted = true
+
+            if(this.player.playerPos.y + this.player.playerSize.h < finalValueBulletLineFloor- 20 ){
+
+            }
+
+
+            this.player.playerPos.y += this.player.playerPhysics.gravity
+
             // const HowInsideBulletLinePlayerIsInX =  this.player.playerPos.x - this.bulletsLine[i].bulletLinePos.x
             // const bulletLineFloorLimit =   HowInsideBulletLinePlayerIsInX * Math.tan(this.bulletsLine[i].angleRad)
             // const floorToBulletLineFloor = bulletLineFloorLimit + ( this.canvasSize.h - this.bulletsLine[i].bulletLinePos.y )
-            const finalValueBulletLineFloor = this.canvasSize.h - (((this.player.playerPos.x - this.bulletsLine[i].bulletLinePos.x) * Math.tan(this.bulletsLine[i].angleRad)) + ( this.canvasSize.h - this.bulletsLine[i].bulletLinePos.y ))
-            console.log("finalValueBulletLineFloor", finalValueBulletLineFloor)
+            
 
             //  if(this.player.playerPos.x > this.bulletsLine[i].bulletLinePos.x &&  this.player.playerPos.x < this.bulletsLine[i].deltaX && this.player.playerPos.y > finalValueBulletLineFloor ){
             //     if(this.player.playerPos.y < this.canvasSize.h-this.player.playerSize.h){
@@ -278,13 +306,16 @@ const game = {
             //  }else{
             //     return
             //  }
-        if(this.player.playerPos.x > this.bulletsLine[i].bulletLinePos.x &&  this.player.playerPos.x < this.bulletsLine[i].deltaX && this.player.playerPos.y + this.player.playerSize.h < finalValueBulletLineFloor- 20 ){
-            this.player.playerPos.y += this.player.playerPhysics.gravity
-         }else{
-            return
-         }
+        // if(this.player.playerPos.y + this.player.playerSize.h < finalValueBulletLineFloor- 20 ){
+        //     this.player.playerPos.y += this.player.playerPhysics.gravity
+        //  }else{
+        //     return
+        //  }
     }else{
         this.tilted = false
+        if(this.player.playerPos.y < this.canvasSize.h-this.player.playerSize.h){
+            this.player.playerPos.y += this.player.playerPhysics.gravity
+        }
 
     }
         }
@@ -301,6 +332,12 @@ const game = {
         this.player.playerPos.x -= 10
     },
     moveUp(){
-        this.player.playerPos.y -= 100
+        // if(this.goingUp=== true && this.framesCounter < this.prevFrameCounter +550){
+        //    this.counter = this.counter +1
+        //     console.log("this.counter", this.counter)
+        //     this.player.playerPos.y -= 500
+        //     this.goingUp = false
+            
+        // }
     }
 }
