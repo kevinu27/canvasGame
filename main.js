@@ -8,7 +8,7 @@ const game = {
     ctx: undefined,
     myMusic: undefined,
     framesCounter: 0,
-    FPS: 20,
+    FPS: 10,
     Temp: 0,
     score: 0,
     framesCounter:0,
@@ -43,7 +43,7 @@ const game = {
     x:undefined,
     y: undefined,
     prevFrameCounter: undefined,
-    FPS: 60,
+    FPS: 20,
     goingUp:false,
     counter: 0,
     bonuses: [],
@@ -99,13 +99,13 @@ const game = {
         document.onkeypress = e => {
             e.key === 'd' ? this.moveRight() : null
             e.key === 'a' ?  this.moveLeft() : null
-            // e.key === 'w' ? this.moveUp() : null
-            if(e.key === 'w') { 
-                console.log("UUUUUPPPPPP!!!!")
-                this.goingUp = true
-                this.prevFrameCounter = this.framesCounter
-                this.moveUp()
-            }
+            e.key === 'w' ? this.moveUp() : null
+            // if(e.key === 'w') { 
+            //     console.log("UUUUUPPPPPP!!!!")
+            //     this.goingUp = true
+            //     this.prevFrameCounter = this.framesCounter
+            //     this.moveUp()
+            // }
             e.key === 's' ? console.log("s") : null
         }
         // document.onkeydown = e => {
@@ -155,7 +155,7 @@ const game = {
     },
 
     createPlayer(){
-        this.player = new Player(this.ctx, 50, 80, 0, this.canvasSize.h-100, this.canvasSize, this.bulletsLine.angleRad, this.bulletsLine.playerPosY, this.bulletsLine.playerPosX, this.bulletsLine.xClick, this.bulletsLine.yClick)
+        this.player = new Player(this.ctx, 50, 80, 0, this.canvasSize.h-900, this.canvasSize, this.bulletsLine.angleRad, this.bulletsLine.playerPosY, this.bulletsLine.playerPosX, this.bulletsLine.xClick, this.bulletsLine.yClick)
     },
     clearAll(){
         this.ctx.clearRect(0,0, this.canvasSize.w, this.canvasSize.h)
@@ -278,52 +278,67 @@ const game = {
         this.ctx.strokeText(`Score ${this.score}`, 700, 80);
         this.ctx.fillText(`Score ${this.score}`, 700, 80);
     },
+
     gravityMove(){
 
-      
-        for(let i = 0; i< this.bulletsLine.length ; i++ ){
-            const finalValueBulletLineFloor = this.canvasSize.h - (((this.player.playerPos.x - this.bulletsLine[i].bulletLinePos.x) * Math.tan(this.bulletsLine[i].angleRad)) + ( this.canvasSize.h - this.bulletsLine[i].bulletLinePos.y ))
-            console.log("finalValueBulletLineFloor", finalValueBulletLineFloor)
-        if(this.player.playerPos.x > this.bulletsLine[i].bulletLinePos.x &&  this.player.playerPos.x < this.bulletsLine[i].deltaX && this.player.playerPos.y + this.player.playerSize.h < finalValueBulletLineFloor- 20 ){
-            this.tilted = true
+        if(this.player.playerPos.y < this.canvasSize.h-this.player.playerSize.h ){
+            if(this.player.velocityY < 50){
 
-            if(this.player.playerPos.y + this.player.playerSize.h < finalValueBulletLineFloor- 20 ){
-
+                this.player.velocityY += this.player.playerPhysics.gravity
             }
 
+            this.player.playerPos.y += this.player.velocityY
 
-            this.player.playerPos.y += this.player.playerPhysics.gravity
+        }
+        
+        // console.log('this.player.velocityY', this.player.velocityY)
+        console.log('this.player.playerPos.y', this.player.playerPos.y)
 
-            // const HowInsideBulletLinePlayerIsInX =  this.player.playerPos.x - this.bulletsLine[i].bulletLinePos.x
-            // const bulletLineFloorLimit =   HowInsideBulletLinePlayerIsInX * Math.tan(this.bulletsLine[i].angleRad)
-            // const floorToBulletLineFloor = bulletLineFloorLimit + ( this.canvasSize.h - this.bulletsLine[i].bulletLinePos.y )
+
+
+    //     for(let i = 0; i< this.bulletsLine.length ; i++ ){
+    //         const finalValueBulletLineFloor = this.canvasSize.h - (((this.player.playerPos.x - this.bulletsLine[i].bulletLinePos.x) * Math.tan(this.bulletsLine[i].angleRad)) + ( this.canvasSize.h - this.bulletsLine[i].bulletLinePos.y ))
+    //         console.log("finalValueBulletLineFloor", finalValueBulletLineFloor)
+    //     if(this.player.playerPos.x > this.bulletsLine[i].bulletLinePos.x &&  this.player.playerPos.x < this.bulletsLine[i].deltaX && this.player.playerPos.y + this.player.playerSize.h < finalValueBulletLineFloor- 20 ){
+    //         this.tilted = true
+
+    //         if(this.player.playerPos.y + this.player.playerSize.h < finalValueBulletLineFloor- 20 ){
+
+    //         }
+
+
+    //         this.player.playerPos.y += this.player.playerPhysics.gravity
+
+    //         // const HowInsideBulletLinePlayerIsInX =  this.player.playerPos.x - this.bulletsLine[i].bulletLinePos.x
+    //         // const bulletLineFloorLimit =   HowInsideBulletLinePlayerIsInX * Math.tan(this.bulletsLine[i].angleRad)
+    //         // const floorToBulletLineFloor = bulletLineFloorLimit + ( this.canvasSize.h - this.bulletsLine[i].bulletLinePos.y )
             
 
-            //  if(this.player.playerPos.x > this.bulletsLine[i].bulletLinePos.x &&  this.player.playerPos.x < this.bulletsLine[i].deltaX && this.player.playerPos.y > finalValueBulletLineFloor ){
-            //     if(this.player.playerPos.y < this.canvasSize.h-this.player.playerSize.h){
-            //         this.player.playerPos.y += this.player.playerPhysics.gravity
-            //     }    
-            //  }else{
-            //     return
-            //  }
-        // if(this.player.playerPos.y + this.player.playerSize.h < finalValueBulletLineFloor- 20 ){
-        //     this.player.playerPos.y += this.player.playerPhysics.gravity
-        //  }else{
-        //     return
-        //  }
-    }else{
-        this.tilted = false
-        if(this.player.playerPos.y < this.canvasSize.h-this.player.playerSize.h){
-            this.player.playerPos.y += this.player.playerPhysics.gravity
-        }
+    //         //  if(this.player.playerPos.x > this.bulletsLine[i].bulletLinePos.x &&  this.player.playerPos.x < this.bulletsLine[i].deltaX && this.player.playerPos.y > finalValueBulletLineFloor ){
+    //         //     if(this.player.playerPos.y < this.canvasSize.h-this.player.playerSize.h){
+    //         //         this.player.playerPos.y += this.player.playerPhysics.gravity
+    //         //     }    
+    //         //  }else{
+    //         //     return
+    //         //  }
+    //     // if(this.player.playerPos.y + this.player.playerSize.h < finalValueBulletLineFloor- 20 ){
+    //     //     this.player.playerPos.y += this.player.playerPhysics.gravity
+    //     //  }else{
+    //     //     return
+    //     //  }
+    // }else{
+    //     this.tilted = false
+    //     if(this.player.playerPos.y < this.canvasSize.h-this.player.playerSize.h){
+    //         this.player.playerPos.y += this.player.playerPhysics.gravity
+    //     }
 
-    }
-        }
+    // }
+    //     }
 
-        if(this.player.playerPos.y < this.canvasSize.h-this.player.playerSize.h){
-            this.player.playerPos.y += this.player.playerPhysics.gravity
-        }
-
+    //     if(this.player.playerPos.y < this.canvasSize.h-this.player.playerSize.h){
+    //         this.player.playerPos.y += this.player.playerPhysics.gravity
+    //     }
+    //     // this.player.playerPhysics.gravity = 0.8
     },
     moveRight(){
         this.player.playerPos.x += 10
@@ -339,5 +354,12 @@ const game = {
         //     this.goingUp = false
             
         // }
+        console.log('moveup')
+        // this.player.playerPhysics.gravity = this.player.playerPhysics.gravity*-1d
+        // this.player.playerPos.y += this.player.playerPhysics.gravity
+        // this.player.playerPos.y = this.player.playerPos.y -100w
+        this.player.velocityY = -50
+        console.log('this.player.velocityY--', this.player.velocityY)
+        this.player.playerPos.y = this.canvasSize.h-this.player.playerSize.h -10
     }
 }

@@ -10,8 +10,9 @@ class Player{
             y:10
         }
         this.playerPhysics = {
-            gravity: 20
+            gravity: 2
         } 
+        this.velocityY = 2
         this.lifeBar = 300
         this.bulletLineAngle = bulletLineAngle
         this.bulletLineStartX = bulletLineStartX
@@ -64,9 +65,9 @@ class Player{
         gravityMove(){
             // console.log("bulletLineAngle en player", this.bulletLineAngle)
 
-            if(this.playerPos.y < this.canvasSize.h-this.playerSize.h){
-                this.playerPos.y += this.playerPhysics.gravity
-            }
+            // if(this.playerPos.y < this.canvasSize.h-this.playerSize.h){
+            //     this.playerPos.y += this.playerPhysics.gravity
+            // }
             // if(this.playerPos.x > ){
             //     console.log("temp")
             // }
