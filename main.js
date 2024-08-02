@@ -47,6 +47,10 @@ const game = {
     goingUp:false,
     counter: 0,
     bonuses: [],
+    isMovingRight: false,
+
+
+
     init() {
         this.setContext()
         this.setDimensions()
@@ -93,6 +97,15 @@ const game = {
         document.onkeydown =e => {
             e.code === this.keys.SPACE ? this.createBall() : null
             e.key === 'z' ? console.log("espacio apryad"): null
+            e.key === 'd' ? isMovingRight = true: null
+            
+
+        }
+
+        document.onkeyup =e => {
+            e.code === this.keys.SPACE ? this.createBall() : null
+            e.key === 'z' ? console.log("espacio apryad"): null
+            e.key === 'd' ? isMovingRight = false: null
             
 
         }
@@ -186,9 +199,12 @@ const game = {
 
     },
     moveAll(){
-        // this.ball.move()
-        // this.player.gravityMove()
+
         this.gravityMove()
+        
+        if(isMovingRight){
+            this.moveRight()
+        }
 
         this.balls.forEach(elm => elm.move())
         this.bullets.forEach(elm => elm.move())
@@ -283,12 +299,10 @@ const game = {
 
         if(this.player.playerPos.y < this.canvasSize.h-this.player.playerSize.h ){
             if(this.player.velocityY < 50){
-
                 this.player.velocityY += this.player.playerPhysics.gravity
             }
 
             this.player.playerPos.y += this.player.velocityY
-
         }
         
         // console.log('this.player.velocityY', this.player.velocityY)
