@@ -98,8 +98,8 @@ const game = {
         document.onkeydown =e => {
             e.code === this.keys.SPACE ? this.createBall() : null
             e.key === 'z' ? console.log("espacio apryad"): null
-            e.key === 'd' ? isMovingRight = true: null
-            e.key === 'a' ? isMovingLeft = true: null
+            e.key === 'd' ? this.isMovingRight = true: null
+            e.key === 'a' ? this.isMovingLeft = true: null
             
 
         }
@@ -107,8 +107,8 @@ const game = {
         document.onkeyup =e => {
             e.code === this.keys.SPACE ? this.createBall() : null
             e.key === 'z' ? console.log("espacio apryad"): null
-            e.key === 'd' ? isMovingRight = false: null
-            e.key === 'a' ? isMovingLeft = false: null
+            e.key === 'd' ? this.isMovingRight = false: null
+            e.key === 'a' ? this.isMovingLeft = false: null
             
 
         }
@@ -205,10 +205,10 @@ const game = {
 
         this.gravityMove()
 
-        if(isMovingRight){
+        if(this.isMovingRight){
             this.moveRight()
         }        
-        if(isMovingLeft){
+        if(this.isMovingLeft){
             this.moveLeft()
         }
 
