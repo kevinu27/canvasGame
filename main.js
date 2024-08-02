@@ -49,6 +49,7 @@ const game = {
     bonuses: [],
     isMovingRight: false,
     isMovingLeft: false,
+    inTheGround: false,
 
 
 
@@ -304,11 +305,15 @@ const game = {
     gravityMove(){
 
         if(this.player.playerPos.y < this.canvasSize.h-this.player.playerSize.h ){
+            this.inTheGround = false
             if(this.player.velocityY < 50){
                 this.player.velocityY += this.player.playerPhysics.gravity
             }
 
             this.player.playerPos.y += this.player.velocityY
+        }else {
+            this.player.playerPos.y = this.canvasSize.h-this.player.playerSize.h
+            this.inTheGround = true
         }
         
         // console.log('this.player.velocityY', this.player.velocityY)
@@ -378,8 +383,14 @@ const game = {
         // this.player.playerPhysics.gravity = this.player.playerPhysics.gravity*-1d
         // this.player.playerPos.y += this.player.playerPhysics.gravity
         // this.player.playerPos.y = this.player.playerPos.y -100w
-        this.player.velocityY = -50
-        console.log('this.player.velocityY--', this.player.velocityY)
-        this.player.playerPos.y = this.canvasSize.h-this.player.playerSize.h -10
+        if(this.inTheGround){
+
+            this.player.velocityY = -50
+            console.log('this.player.velocityY--', this.player.velocityY)
+            if(this.player.playerPos.y >= this.canvasSize.h-this.player.playerSize.h  ){
+    
+                this.player.playerPos.y = this.canvasSize.h-this.player.playerSize.h -10
+            }
+        }
     }
 }
