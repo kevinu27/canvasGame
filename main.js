@@ -48,6 +48,7 @@ const game = {
     counter: 0,
     bonuses: [],
     isMovingRight: false,
+    isMovingLeft: false,
 
 
 
@@ -98,6 +99,7 @@ const game = {
             e.code === this.keys.SPACE ? this.createBall() : null
             e.key === 'z' ? console.log("espacio apryad"): null
             e.key === 'd' ? isMovingRight = true: null
+            e.key === 'a' ? isMovingLeft = true: null
             
 
         }
@@ -106,11 +108,12 @@ const game = {
             e.code === this.keys.SPACE ? this.createBall() : null
             e.key === 'z' ? console.log("espacio apryad"): null
             e.key === 'd' ? isMovingRight = false: null
+            e.key === 'a' ? isMovingLeft = false: null
             
 
         }
         document.onkeypress = e => {
-            e.key === 'd' ? this.moveRight() : null
+            // e.key === 'd' ? this.moveRight() : null
             e.key === 'a' ?  this.moveLeft() : null
             e.key === 'w' ? this.moveUp() : null
             // if(e.key === 'w') { 
@@ -201,9 +204,12 @@ const game = {
     moveAll(){
 
         this.gravityMove()
-        
+
         if(isMovingRight){
             this.moveRight()
+        }        
+        if(isMovingLeft){
+            this.moveLeft()
         }
 
         this.balls.forEach(elm => elm.move())
