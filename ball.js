@@ -1,13 +1,13 @@
 class Ball{
-    constructor(ctx, ballSize, ballPosX, ballPosY, ballCircle, canvasSize, ballVel){
+    constructor(ctx, ballSize, ballPosX, ballPosY, ballCircle, canvasSize, ballVelX, ballVelY=10){
         this.ctx = ctx
         this.ballSize = ballSize
         this.ballPos = { x: ballPosX, y: ballPosY}
         this.canvasSize = canvasSize
         this.ballCircle =ballCircle
         this.ballVel = {
-            x: ballVel,
-            y:10
+            x: ballVelX,
+            y:ballVelY
         }
         this.ballPhysics = {
             gravity: 0.8

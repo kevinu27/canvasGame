@@ -106,7 +106,7 @@ const game = {
         }
 
         document.onkeyup =e => {
-            e.code === this.keys.SPACE ? this.createBall() : null
+            // e.code === this.keys.SPACE ? this.createBall() : null
             e.key === 'z' ? console.log("espacio apryad"): null
             e.key === 'd' ? this.isMovingRight = false: null
             e.key === 'a' ? this.isMovingLeft = false: null
@@ -252,8 +252,8 @@ const game = {
                     this.bullets.splice(j, 1)
                     return
                 }
-            this.balls.push(new Ball(this.ctx, this.balls[i].ballSize/2, this.balls[i].ballPos.x, this.balls[i].ballPos.y, 100, this.canvasSize, 10)) 
-            this.balls.push(new Ball(this.ctx, this.balls[i].ballSize/2, this.balls[i].ballPos.x, this.balls[i].ballPos.y, 100, this.canvasSize, -10)) 
+            this.balls.push(new Ball(this.ctx, this.balls[i].ballSize/2, this.balls[i].ballPos.x, this.balls[i].ballPos.y, 100, this.canvasSize, 10,-10)) 
+            this.balls.push(new Ball(this.ctx, this.balls[i].ballSize/2, this.balls[i].ballPos.x, this.balls[i].ballPos.y, 100, this.canvasSize, -10, -10)) 
                 this.score += this.balls[i].ballSize
                 if(this.score >= 100){
                     this.bonuses.push(new Bonus(this.ctx, 40, 40, this.balls[i].ballPos.x, this.balls[i].ballPos.y, 100, this.canvasSize, 10)) 
